@@ -1,24 +1,22 @@
 package acme.example.work_order.api;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.sql.DataSource;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import acme.example.work_order.service.JobService;
 
 
 @SpringBootTest
@@ -28,6 +26,9 @@ public class JobControllerTest extends BaseApiTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JobService jobServiceMock;
 
     @Test
     @DisplayName("Test getJob() endpoint when the job exists")
@@ -47,4 +48,13 @@ public class JobControllerTest extends BaseApiTest {
                 .andExpect(status().isNotFound());
 
     }
+
+    @Test
+    @DisplayName("Test getJob() endpoint when an exception occurs (500 error)")
+    void getJobTest_serverError() throws Exception {
+        doThrow(new RuntimeException()).when(jobServiceMock).findById(anyLong());
+        mockMvc.perform(get("/job?id=1"))
+                .andExpect(status().isInternalServerError());
+    }
+
 }
