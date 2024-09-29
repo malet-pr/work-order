@@ -1,4 +1,4 @@
-package acme.example.work_order.workorder.integration;
+package acme.example.work_order.integration;
 
 import acme.example.work_order.job.internal.Job;
 import acme.example.work_order.job.internal.JobDAO;
@@ -17,7 +17,7 @@ import java.util.List;
 @SpringBootTest
 @Transactional
 @Sql(scripts = "/sql/jobTestData.sql")
-public class JobServiceIntegrationTest {
+public class JobServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private JobServiceImpl service;

@@ -1,3 +1,5 @@
+truncate table job cascade;
+ALTER SEQUENCE job_seq RESTART WITH 1;
 
 insert into job values
 ('Y',NOW(),1,'JobCode1','job name 1'),

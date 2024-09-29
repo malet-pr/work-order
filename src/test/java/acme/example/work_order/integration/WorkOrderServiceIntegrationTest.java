@@ -1,4 +1,4 @@
-package acme.example.work_order.workorder.integration;
+package acme.example.work_order.integration;
 
 import acme.example.work_order.workorder.WorkOrderDTO;
 import acme.example.work_order.workorderjob.WorkOrderJobDTO;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 @SpringBootTest
 @Transactional
 @Sql(scripts = "/sql/woTestData.sql")
-public class WorkOrderServiceIntegrationTest {
+public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private WorkOrderServiceImpl service;

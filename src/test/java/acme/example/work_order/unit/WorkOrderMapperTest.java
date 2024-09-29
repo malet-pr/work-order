@@ -1,4 +1,4 @@
-package acme.example.work_order.workorder.unit;
+package acme.example.work_order.unit;
 
 
 import acme.example.work_order.job.internal.Job;

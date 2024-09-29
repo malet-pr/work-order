@@ -1,4 +1,4 @@
-package acme.example.work_order.workorder.integration;
+package acme.example.work_order.integration;
 
 import jakarta.transaction.Transactional;
 import acme.example.work_order.workorderjob.WorkOrderJobDTO;
