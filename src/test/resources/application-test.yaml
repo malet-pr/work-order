@@ -1,0 +1,22 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: drools
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  datasource:
+    url: jdbc:tc:postgres:///test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: test
+    password: test
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    org.hibernate.SQL: DEBUG  # Logs the actual SQL queries
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Logs the SQL parameters
+    org.hibernate.tool.hbm2ddl.SchemaExport: DEBUG  # Logs schema generation (DDL)
