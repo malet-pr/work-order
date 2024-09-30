@@ -1,0 +1,35 @@
+profile:
+  property:
+    value: chaos
+spring:
+  application:
+    name: work_order
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/work_order"
+    username: "drools"
+    password: "drools"
+logging:
+  level:
+    org.hibernate.SQL: DEBUG  # Logs the actual SQL queries
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Logs the SQL parameters
+    org.hibernate.tool.hbm2ddl.SchemaExport: DEBUG  # Logs schema generation (DDL)
+chaos:
+  monkey:
+    enabled: true
+    watcher:
+      controller: true  # Enable chaos monkey for controllers
+      service: true     # Enable chaos monkey for services
+      rest-controller: true
+    assaults:
+      latency-active: false         # Disable artificial latency
+      exceptions-active: true       # Enable exception throwing
+      exception:
+        type: java.lang.RuntimeException
+
