@@ -1,4 +1,4 @@
-package acme.example.work_order.service;
+package acme.example.work_order.job;
 
 
 import acme.example.work_order.job.JobDTO;

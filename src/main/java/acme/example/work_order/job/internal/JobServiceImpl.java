@@ -2,7 +2,7 @@ package acme.example.work_order.job.internal;
 
 
 import acme.example.work_order.job.JobDTO;
-import acme.example.work_order.service.JobService;
+import acme.example.work_order.job.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

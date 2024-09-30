@@ -67,11 +67,37 @@ public class WorkOrderJobServiceIntegrationTest extends BaseIntegrationTest {
         Assertions.assertFalse(saved, "The entity should not have been saved because it`s parent doesn't exist.");
     }
 
+    @Test
+    @DisplayName("Tests a dto is returned when searching by existing id")
+    void findByIdTest_idExists() {
+        // Arrange
+        // Act
+        WorkOrderJobDTO woJobDTO = service.findById(1L);
+        // Assert
+        Assertions.assertNotNull(woJobDTO,"There should be a work order job dto returned when searching by existing id");
+        Assertions.assertEquals("ABC123",woJobDTO.getWoNumber(),"wo number does not match.");
+        Assertions.assertEquals("jobCode1",woJobDTO.getJobCode(),"job code does not match.");
+        Assertions.assertEquals(5,woJobDTO.getQuantity(),"quantity does not match.");
+        Assertions.assertEquals('Y',woJobDTO.getActiveStatus(),"active status does not match.");
+        Assertions.assertEquals("",woJobDTO.getAppliedRule(),"applied rule does not match.");
+    }
+
+    @Test
+    @DisplayName("Tests null is returned when searching by a non-existing id")
+    void findByIdTest_idNotExists() {
+        // Arrange
+        // Act
+        WorkOrderJobDTO woJobDTO = service.findById(100L);
+        // Assert
+        Assertions.assertNull(woJobDTO,"No DTO should be returned when searching by a non-existing id");
+    }
+
+
+
 }
 
 
 /*
-    WorkOrderJobDTO findById(Long id);
     List<WorkOrderJobDTO> findByIds(List<Long> ids);
     List<WorkOrderJobDTO> findByCodes(List<String> jobCodeList);
  */
