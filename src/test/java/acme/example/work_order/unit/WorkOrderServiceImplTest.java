@@ -4,7 +4,7 @@ import acme.example.work_order.workorder.WorkOrderDTO;
 import acme.example.work_order.workorderjob.WorkOrderJobDTO;
 import acme.example.work_order.workorder.internal.WorkOrderMapper;
 import acme.example.work_order.workorder.internal.WorkOrderServiceImpl;
-import acme.example.work_order.jobType.internal.JobType;
+import acme.example.work_order.jobtype.internal.JobType;
 import acme.example.work_order.workorder.internal.WorkOrder;
 import acme.example.work_order.workorderjob.internal.WorkOrderJob;
 import acme.example.work_order.workorder.internal.WorkOrderDAO;

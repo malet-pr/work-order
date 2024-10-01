@@ -1,4 +1,4 @@
-package acme.example.work_order.jobType.internal;
+package acme.example.work_order.jobtype.internal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

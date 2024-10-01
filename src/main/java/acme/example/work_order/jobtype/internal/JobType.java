@@ -1,4 +1,4 @@
-package acme.example.work_order.jobType.internal;
+package acme.example.work_order.jobtype.internal;
 
 import acme.example.work_order.common.BaseEntity;
 import jakarta.persistence.Entity;

@@ -1,10 +1,10 @@
 package acme.example.work_order.integration;
 
 import jakarta.transaction.Transactional;
-import acme.example.work_order.jobType.JobTypeDTO;
-import acme.example.work_order.jobType.internal.JobType;
-import acme.example.work_order.jobType.internal.JobTypeDAO;
-import acme.example.work_order.jobType.internal.JobTypeServiceImpl;
+import acme.example.work_order.jobtype.JobTypeDTO;
+import acme.example.work_order.jobtype.internal.JobType;
+import acme.example.work_order.jobtype.internal.JobTypeDAO;
+import acme.example.work_order.jobtype.internal.JobTypeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

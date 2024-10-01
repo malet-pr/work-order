@@ -1,7 +1,7 @@
-package acme.example.work_order.jobType.internal;
+package acme.example.work_order.jobtype.internal;
 
 
-import acme.example.work_order.jobType.JobTypeDTO;
+import acme.example.work_order.jobtype.JobTypeDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

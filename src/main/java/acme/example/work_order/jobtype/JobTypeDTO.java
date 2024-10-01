@@ -1,4 +1,4 @@
-package acme.example.work_order.jobType;
+package acme.example.work_order.jobtype;
 
 import lombok.*;
 

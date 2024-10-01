@@ -1,7 +1,7 @@
 package acme.example.work_order.api;
 
-import acme.example.work_order.jobType.internal.JobType;
-import acme.example.work_order.jobType.internal.JobTypeDAO;
+import acme.example.work_order.jobtype.internal.JobType;
+import acme.example.work_order.jobtype.internal.JobTypeDAO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,6 @@ public class JobTypeControllerTest extends BaseApiTest{
                 .andExpect(jsonPath("$.name").value("job type name 1"))
                 .andExpect(jsonPath("$.activeStatus").value("Y"))
                 .andExpect(jsonPath("$.clientType").value("consumer"));
-
     }
 
     @Test
@@ -87,6 +86,25 @@ public class JobTypeControllerTest extends BaseApiTest{
     @DisplayName("Test not found is returned when search by a non-existing id")
     void getActiveStatusTest_failure() throws Exception {
         mockMvc.perform(get("/jobtypes/{id}/status", 100L))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Test findByCode() endpoint when the job type exists")
+    void findByCode_exist() throws Exception {
+        mockMvc.perform(get("/jobtypes/codes/{code}", "type1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.code").value("type1"))
+                .andExpect(jsonPath("$.name").value("job type name 1"))
+                .andExpect(jsonPath("$.activeStatus").value("Y"))
+                .andExpect(jsonPath("$.clientType").value("consumer"));
+    }
+
+    @Test
+    @DisplayName("Test findByCode() endpoint when the job type doesn't exists")
+    void findByCode_notExist() throws Exception {
+        mockMvc.perform(get("/jobtypes/codes/{code}", "non-existent"))
                 .andExpect(status().isNotFound());
     }
 

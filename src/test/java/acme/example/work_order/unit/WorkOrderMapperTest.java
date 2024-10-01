@@ -3,8 +3,8 @@ package acme.example.work_order.unit;
 
 import acme.example.work_order.job.internal.Job;
 import acme.example.work_order.job.internal.JobDAO;
-import acme.example.work_order.jobType.internal.JobType;
-import acme.example.work_order.jobType.internal.JobTypeDAO;
+import acme.example.work_order.jobtype.internal.JobType;
+import acme.example.work_order.jobtype.internal.JobTypeDAO;
 import acme.example.work_order.workorder.WorkOrderDTO;
 import acme.example.work_order.workorder.internal.WorkOrder;
 import acme.example.work_order.workorder.internal.WorkOrderMapper;

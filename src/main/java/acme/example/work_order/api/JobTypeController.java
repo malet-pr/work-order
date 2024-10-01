@@ -1,7 +1,7 @@
 package acme.example.work_order.api;
 
-import acme.example.work_order.jobType.JobTypeDTO;
-import acme.example.work_order.jobType.JobTypeService;
+import acme.example.work_order.jobtype.JobTypeDTO;
+import acme.example.work_order.jobtype.JobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +47,20 @@ public class JobTypeController {
         }
     }
 
+    @GetMapping("/codes/{code}")
+    public ResponseEntity<JobTypeDTO> getJobByCode(@PathVariable("code") String code) {
+        try {
+            JobTypeDTO type = typeService.findByCode(code);
+            return type != null ? new ResponseEntity<>(type, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }
 
 /*
-    JobTypeDTO findByCode(String code);
     JobTypeDTO findByCodeAndActiveStatus(String code, Character activeStatus);
     List<JobTypeDTO> findByCodesAndActiveStatus(List<String> codes, Character activeStatus);
     List<Long> findByCodes(List<String> codes);
