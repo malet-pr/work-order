@@ -92,12 +92,54 @@ public class WorkOrderJobServiceIntegrationTest extends BaseIntegrationTest {
         Assertions.assertNull(woJobDTO,"No DTO should be returned when searching by a non-existing id");
     }
 
+    @Test
+    @DisplayName("Tests a list of dtos is returned when searching by at least one existing id")
+    void findByIdsTest_someIdExist() {
+        // Arrange
+        // Act
+        List<WorkOrderJobDTO> dtos = service.findByIds(List.of(1L,3L,20L,30L));
+        // Assert
+        Assertions.assertInstanceOf(List.class,dtos,"The method should return a list");
+        Assertions.assertFalse(dtos.isEmpty(), "There should be at least one object in the list");
+        Assertions.assertEquals(2,dtos.size(),"There should be two objects in the list");
+        Assertions.assertTrue(dtos.stream().map(WorkOrderJobDTO::getWoNumber).toList().containsAll(List.of("ABC123","ABC456")),
+                "The list of wo numbers should contain ABC123 and ABC456");
+    }
 
+    @Test
+    @DisplayName("Tests an empty list is returned when searching by a list of non-existing ids")
+    void findByIdsTest_noneIdExist() {
+        // Arrange
+        // Act
+        List<WorkOrderJobDTO> dtos = service.findByIds(List.of(20L, 30L,50L));
+        // Assert
+        Assertions.assertInstanceOf(List.class,dtos,"The method should return a list");
+        Assertions.assertTrue(dtos.isEmpty(), "There should be no objects in the list");
+    }
 
+    @Test
+    @DisplayName("Tests a list of dtos is returned when searching by at least one existing code")
+    void findByCodesTest_someCodesExist() {
+        // Arrange
+        // Act
+        List<WorkOrderJobDTO> dtos = service.findByCodes(List.of("jobCode4","non-existing"));
+        // Assert
+        Assertions.assertInstanceOf(List.class,dtos,"The method should return a list");
+        Assertions.assertFalse(dtos.isEmpty(), "There should be at least one object in the list");
+        Assertions.assertEquals(1,dtos.size(),"There should be one object in the list");
+        Assertions.assertTrue(dtos.stream().map(WorkOrderJobDTO::getWoNumber).toList().contains("ABC123"),
+                "The list of wo numbers should contain only ABC123");
+    }
+
+    @Test
+    @DisplayName("Tests an empty list is returned when searching by a list of non-existing codes")
+    void findByCodesTest_noCodeExist() {
+        // Arrange
+        // Act
+        List<WorkOrderJobDTO> dtos = service.findByCodes(List.of("some-fruit","non-existing"));
+        // Assert
+        Assertions.assertInstanceOf(List.class,dtos,"The method should return a list");
+        Assertions.assertTrue(dtos.isEmpty(), "There should be no objects in the list");
+    }
 }
 
-
-/*
-    List<WorkOrderJobDTO> findByIds(List<Long> ids);
-    List<WorkOrderJobDTO> findByCodes(List<String> jobCodeList);
- */
