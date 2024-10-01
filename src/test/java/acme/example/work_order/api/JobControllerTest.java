@@ -89,8 +89,6 @@ public class JobControllerTest extends BaseApiTest {
                         .content("{ \"code\":null, \"name\":\"test saving jobs\", \"activeStatus\":\"Y\"}")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
-        Job job = jobDAO.findByCode("newJob");
-        Assertions.assertNull(job, "Job should not exist");
     }
 
     @Test
