@@ -20,12 +20,9 @@ public class JobController {
     public ResponseEntity<JobDTO> getJob(@PathVariable("id") Long id) {
         try {
             JobDTO job = jobService.findById(id);
-            if (job != null) {
-                return ResponseEntity.ok(job);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            return job != null ? new ResponseEntity<>(job, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -34,12 +31,9 @@ public class JobController {
     public ResponseEntity<JobDTO> getJobByCode(@PathVariable("code") String code) {
         try {
             JobDTO job = jobService.findByCode(code);
-            if (job != null) {
-                return ResponseEntity.ok(job);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            return job != null ? new ResponseEntity<>(job, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -48,13 +42,9 @@ public class JobController {
     public ResponseEntity<Boolean> createJob(@RequestBody JobDTO jobDTO) {
         try{
             boolean saved = jobService.save(jobDTO);
-            if (saved) {
-                return new ResponseEntity<>(true, HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(false, HttpStatus.CONFLICT);
-            }
+            return saved ? new ResponseEntity<>(true, HttpStatus.CREATED) : new ResponseEntity<>(false, HttpStatus.CONFLICT);
         } catch (Exception e) {
-            System.out.println();
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,8 +53,9 @@ public class JobController {
     public ResponseEntity<String> getNameByJob(@PathVariable("id") Long id) {
         try {
             String name = jobService.getNameByJob(id);
-            return !name.isBlank() ?  ResponseEntity.ok(name) : ResponseEntity.notFound().build();
+            return !name.isBlank() ?  new ResponseEntity<>(name, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
