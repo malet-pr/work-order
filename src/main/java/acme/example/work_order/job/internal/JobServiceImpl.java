@@ -54,9 +54,9 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Long> findByCodes(List<String> codes) {
-        List<Job> list = jobDAO.findByCodes(codes);
-        return list.stream().map(Job::getId).toList();
+    public List<JobDTO> findByCodes(List<String> codes) {
+        List<Job> jobs = jobDAO.findByCodes(codes);
+        return jobs.stream().map(jobMapper::convertToDto).toList();
     }
 
     @Override
@@ -67,8 +67,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDTO> findByCodesAndActiveStatus(List<String> codes, Character activeStatus) {
-        List<Job> actividades = jobDAO.findByCodesAndActiveStatus(codes,activeStatus);
-        return actividades.stream().map(jobMapper::convertToDto).toList();
+        List<Job> jobs = jobDAO.findByCodesAndActiveStatus(codes,activeStatus);
+        return jobs.stream().map(jobMapper::convertToDto).toList();
     }
 
 }

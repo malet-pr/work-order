@@ -13,3 +13,12 @@ public class WorkOrderJobController {
     private WorkOrderJobService woJobService;
 
 }
+
+/*
+    boolean save(WorkOrderJobDTO orden);
+    WorkOrderJobDTO findById(Long id);
+    List<WorkOrderJobDTO> findByIds(List<Long> ids);
+    List<WorkOrderJobDTO> findByCodes(List<String> jobCodeList);
+
+    http://api.mycompany.com/{path_parameter}?query_parameter=value
+ */

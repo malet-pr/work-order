@@ -4,6 +4,8 @@ import acme.example.work_order.job.JobDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class JobMapper {
 

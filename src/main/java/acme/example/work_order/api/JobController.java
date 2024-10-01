@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/jobs")
@@ -14,7 +16,6 @@ public class JobController {
 
     @Autowired
     private JobService jobService;
-
 
     @GetMapping("/{id}")
     public ResponseEntity<JobDTO> getJob(@PathVariable("id") Long id) {
@@ -45,7 +46,7 @@ public class JobController {
             return saved ? new ResponseEntity<>(true, HttpStatus.CREATED) : new ResponseEntity<>(false, HttpStatus.CONFLICT);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -67,7 +68,18 @@ public class JobController {
             return status != null ? new ResponseEntity<>(String.valueOf(status), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }  catch (Exception e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/codes")
+    public ResponseEntity<List<JobDTO>> findByCodes(@RequestParam("codeList") List<String> codeList) {
+        try {
+            List<JobDTO> codes = jobService.findByCodes(codeList);
+            return new ResponseEntity<>(codes, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -76,5 +88,4 @@ public class JobController {
 /*
     public JobDTO findByCodeAndActiveStatus(String code, Character activeStatus);
     public List<JobDTO> findByCodesAndActiveStatus(List<String> codes, Character activeStatus);
-    public List<Long> findByCodes(List<String> codes);
  */

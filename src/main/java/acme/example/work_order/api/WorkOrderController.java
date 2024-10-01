@@ -13,3 +13,9 @@ public class WorkOrderController {
     private WorkOrderService woService;
 
 }
+
+/*
+    Boolean save(WorkOrderDTO workOrderDTO);
+    WorkOrderDTO findById(Long id);
+    WorkOrderDTO findByWoNumber(String woNumber);
+ */

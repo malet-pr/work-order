@@ -141,15 +141,17 @@ public class JobServiceImplTest {
         String code1 = "mockCode1";
         String code2 = "mockCode2";
         String code3 = "mockCode3";
-        Job job1 = Job.builder().name("mockJob1").code(code1).activeStatus(('N')).build();
+        Job job1 = Job.builder().name("mockJob1").code(code1).activeStatus('N').build();
         job1.setId(1L);
-        Job job2 = Job.builder().name("mockJob2").code(code2).activeStatus(('Y')).build();
+        Job job2 = Job.builder().name("mockJob2").code(code2).activeStatus('Y').build();
         job2.setId(2L);
+        JobDTO dto1 = JobDTO.builder().name("mockJob1").code(code1).activeStatus('N').build();
+        JobDTO dto2 = JobDTO.builder().name("mockJob2").code(code2).activeStatus('Y').build();
         when(jobDAOMock.findByCodes(Arrays.asList(code1,code2,code3))).thenReturn(Arrays.asList(job1,job2));
         // Act
-        List<Long> result = service.findByCodes(Arrays.asList(code1,code2,code3));
+        List<JobDTO> result = service.findByCodes(Arrays.asList(code1,code2,code3));
         // Assert
-        Assertions.assertEquals(Arrays.asList(1L,2L),result);
+        Assertions.assertEquals(Arrays.asList(dto1,dto2),result);
     }
 
     @Test()
@@ -161,7 +163,7 @@ public class JobServiceImplTest {
         String code3 = "mockCode3";
         when(jobDAOMock.findByCodes(Arrays.asList(code1,code2,code3))).thenReturn(new ArrayList<>());
         // Act
-        List<Long> result = service.findByCodes(Arrays.asList(code1,code2,code3));
+        List<JobDTO> result = service.findByCodes(Arrays.asList(code1,code2,code3));
         // Assert
         Assertions.assertEquals(new ArrayList<>(),result);
     }

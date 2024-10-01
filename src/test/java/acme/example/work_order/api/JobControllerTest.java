@@ -1,7 +1,11 @@
 package acme.example.work_order.api;
 
+import acme.example.work_order.job.JobDTO;
 import acme.example.work_order.job.internal.Job;
 import acme.example.work_order.job.internal.JobDAO;
+import acme.example.work_order.job.internal.JobMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +20,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,6 +35,11 @@ public class JobControllerTest extends BaseApiTest {
 
     @Autowired
     private JobDAO jobDAO;
+
+    @Autowired
+    JobMapper jobMapper = new JobMapper();
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     @DisplayName("Test getJob() endpoint when the job exists")
@@ -109,7 +120,6 @@ public class JobControllerTest extends BaseApiTest {
                 .andExpect(status().isNotFound());
     }
 
-
     @Test
     @DisplayName("Test that a status is returned when search by an existing id")
     void getActiveStatusTest_success() throws Exception {
@@ -128,7 +138,35 @@ public class JobControllerTest extends BaseApiTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @DisplayName("Test a list of dtos is returned when searching for at least one existing code")
+    void findByCodesTest_success() throws Exception {
+        List<Job> jobs = jobDAO.findByCodes(List.of("JobCode1","JobCode2"));
+        List<JobDTO> dtoList = jobs.stream().map(jobMapper::convertToDto).toList();
+        MvcResult result = mockMvc.perform(get("/jobs/codes")
+                        .param("codeList",new String[]{"JobCode1", "JobCode2"}))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<JobDTO> dtos = objectMapper.readValue(json, new TypeReference<>(){});
+        Assertions.assertNotNull(dtos,"There should be at least one dto");
+        Assertions.assertEquals(2, dtos.size(),"There should be two dtos");
+        Assertions.assertEquals(dtoList, dtos, "The list of dtos should match");
+    }
 
+    @Test
+    @DisplayName("An empty list should be returned when searching by a list of non-existing codes")
+    void findByCodesTest_failure() throws Exception {
+        MvcResult result = mockMvc.perform(get("/jobs/codes")
+                        .param("codeList",new String[]{"non", "existing"}))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<JobDTO> dtos = objectMapper.readValue(json, new TypeReference<>(){});
+        Assertions.assertTrue(dtos.isEmpty(),"There should be no dtos");
+    }
 
 }
 

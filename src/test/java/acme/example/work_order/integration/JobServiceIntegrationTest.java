@@ -2,6 +2,7 @@ package acme.example.work_order.integration;
 
 import acme.example.work_order.job.internal.Job;
 import acme.example.work_order.job.internal.JobDAO;
+import acme.example.work_order.job.internal.JobMapper;
 import acme.example.work_order.job.internal.JobServiceImpl;
 import jakarta.transaction.Transactional;
 import acme.example.work_order.job.JobDTO;
@@ -25,6 +26,8 @@ public class JobServiceIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private JobDAO jobDAO;
 
+    @Autowired
+    JobMapper jobMapper = new JobMapper();
 
     @Test
     @DisplayName("Test if an entity is saved in the database")
@@ -173,13 +176,14 @@ public class JobServiceIntegrationTest extends BaseIntegrationTest {
     @DisplayName("Test if the right list will be returned when searching by a list of codes, some of them existing")
     void findByCodes_foundSome() {
         // Arrange
+        List<Job> jobs = jobDAO.findByCodes(List.of("JobCode1","JobCode2"));
+        List<JobDTO> dtoList = jobs.stream().map(jobMapper::convertToDto).toList();
         // Act
-        List<Long> dtos = service.findByCodes(Arrays.asList("JobCode1","JobCode2","non-existing"));
+        List<JobDTO> dtos = service.findByCodes(Arrays.asList("JobCode1","JobCode2","non-existing"));
         // Assert
         Assertions.assertInstanceOf(List.class,dtos,"The method should return a List");
         Assertions.assertEquals(2,dtos.size(), "The size of the two lists did not match");
-        Assertions.assertTrue(dtos.contains(1L),"The list should contain the id of the first jobType");
-        Assertions.assertTrue(dtos.contains(2L),"The list should contain the id of the second jobType");
+        Assertions.assertEquals(dtoList,dtos,"The method should return a List with given dtos");
     }
 
     @Test
@@ -187,7 +191,7 @@ public class JobServiceIntegrationTest extends BaseIntegrationTest {
     void findByCodes_noneFound() {
         // Arrange
         // Act
-        List<Long> dtos = service.findByCodes(Arrays.asList("bad-code","non-existing"));
+        List<JobDTO> dtos = service.findByCodes(Arrays.asList("bad-code","non-existing"));
         // Assert
         Assertions.assertInstanceOf(List.class,dtos,"The method should return a List");
         Assertions.assertEquals(0,dtos.size(), "The method should return an empty list");
