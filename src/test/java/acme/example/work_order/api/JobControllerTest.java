@@ -109,5 +109,26 @@ public class JobControllerTest extends BaseApiTest {
                 .andExpect(status().isNotFound());
     }
 
+
+    @Test
+    @DisplayName("Test that a status is returned when search by an existing id")
+    void getActiveStatusTest_success() throws Exception {
+        MvcResult result = mockMvc.perform(get("/jobs/{id}/status", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/plain;charset=UTF-8"))
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assertions.assertEquals("Y", content, "Job status should match");
+    }
+
+    @Test
+    @DisplayName("Test not found is returned when search by a non-existing id")
+    void getActiveStatusTest_failure() throws Exception {
+        mockMvc.perform(get("/jobs/{id}/status", 100L))
+                .andExpect(status().isNotFound());
+    }
+
+
+
 }
 

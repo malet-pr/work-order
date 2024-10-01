@@ -60,10 +60,20 @@ public class JobController {
         }
     }
 
+    @GetMapping("/{id}/status")
+    public ResponseEntity<String> getActiveStatus(@PathVariable("id") Long id) {
+        try{
+            Character status = jobService.getActiveStatusById(id);
+            return status != null ? new ResponseEntity<>(String.valueOf(status), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }  catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
 /*
-    public Character getActiveStatusById(Long id);
     public JobDTO findByCodeAndActiveStatus(String code, Character activeStatus);
     public List<JobDTO> findByCodesAndActiveStatus(List<String> codes, Character activeStatus);
     public List<Long> findByCodes(List<String> codes);

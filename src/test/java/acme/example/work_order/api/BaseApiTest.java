@@ -30,4 +30,14 @@ public abstract class BaseApiTest {
         registry.add("spring.datasource.password", container::getPassword);
     }
 
+    @BeforeAll
+    static void beforeEach() {
+        container.start();
+    }
+
+    @AfterAll
+    static void afterEach() {
+        container.stop();
+    }
+
 }
