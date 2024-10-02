@@ -31,59 +31,48 @@ public class WorkOrderControllerTest extends BaseApiTest{
     @Autowired
     private WorkOrderDAO woDAO;
 
-    static Gson gson = new GsonBuilder()
+    Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
             .create();
 
-    static String json1, json2, json3 = "";
+    static WorkOrderJobDTO woJobDTO1, woJobDTO2;
 
     @BeforeAll
     static void setUp() {
-        WorkOrderJobDTO woJobDTO1 = WorkOrderJobDTO.builder()
+        woJobDTO1 = WorkOrderJobDTO.builder()
                 .woNumber("testNumber")
                 .jobCode("JobCode1")
                 .quantity(2)
                 .activeStatus('Y')
                 .build();
-        WorkOrderJobDTO woJobDTO2 = WorkOrderJobDTO.builder()
+        woJobDTO2 = WorkOrderJobDTO.builder()
                 .woNumber("testNumber")
                 .jobCode("JobCode2")
                 .quantity(1)
                 .activeStatus('Y')
                 .build();
-        WorkOrderDTO woDTO1 = WorkOrderDTO.builder()
-                .woNumber("testNumber")
-                .jobTypeId(1L)
-                .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
-                .woCreationDate(LocalDateTime.now().minusDays(3))
-                .woCompletionDate(LocalDateTime.now().minusHours(4))
-                .address("address1")
-                .city("city1")
-                .state("state1")
-                .clientId("client1")
-                .build();
-        json1 = gson.toJson(woDTO1);
-        WorkOrderDTO woDTO2 = WorkOrderDTO.builder()
-                .jobTypeId(1L)
-                .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
-                .woCreationDate(LocalDateTime.now().minusDays(3))
-                .woCompletionDate(LocalDateTime.now().minusHours(4))
-                .address("address1")
-                .city("city1")
-                .state("state1")
-                .clientId("client1")
-                .build();
-        json2 = gson.toJson(woDTO2);
     }
 
     @Test
     @DisplayName("Test successful save of a work order")
     void createWorkOrder_success() throws Exception {
         // Arrange
+        WorkOrderDTO woDTO = WorkOrderDTO.builder()
+                .woNumber("testNumber")
+                .jobTypeId(1L)
+                .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
+                .woCreationDate(LocalDateTime.now().minusDays(3))
+                .woCompletionDate(LocalDateTime.now().minusHours(4))
+                .address("address1")
+                .city("city1")
+                .state("state1")
+                .clientId("client1")
+                .build();
+        String json = gson.toJson(woDTO);
         // Act
         mockMvc.perform(post("/workorders")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json1))
+                .content(json))
                 .andExpect(status().isCreated());
         WorkOrder wo = woDAO.findByWoNumber("testNumber");
         // Assert
@@ -96,9 +85,22 @@ public class WorkOrderControllerTest extends BaseApiTest{
     @Test
     @DisplayName("Test that WO cannot be saved without a number")
     void createJobTest_failure_noNumber() throws Exception {
+        // Arrange
+        WorkOrderDTO woDTO = WorkOrderDTO.builder()
+                .jobTypeId(1L)
+                .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
+                .woCreationDate(LocalDateTime.now().minusDays(3))
+                .woCompletionDate(LocalDateTime.now().minusHours(4))
+                .address("address1")
+                .city("city1")
+                .state("state1")
+                .clientId("client1")
+                .build();
+        String json = gson.toJson(woDTO);
+        // Act and Assert
         mockMvc.perform(post("/workorders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json2))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
                 .andExpect(status().isConflict());
     }
 
