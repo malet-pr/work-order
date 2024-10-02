@@ -32,7 +32,7 @@ public class WorkOrder extends BaseEntity {
     private String state;
     private LocalDateTime woCreationDate;
     private LocalDateTime woCompletionDate;
-    private String clientID;
+    private String clientId;
     private String appliedRule;
 
     @Override

@@ -31,8 +31,8 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
     @DisplayName("Test if an entity is saved in the database")
     void saveTest() {
         // Arrange
-        WorkOrderJobDTO woJobDTO1 = WorkOrderJobDTO.builder().jobCode("jobCode1").build();
-        WorkOrderJobDTO woJobDTO2 = WorkOrderJobDTO.builder().jobCode("jobCode2").build();
+        WorkOrderJobDTO woJobDTO1 = WorkOrderJobDTO.builder().jobCode("JobCode1").build();
+        WorkOrderJobDTO woJobDTO2 = WorkOrderJobDTO.builder().jobCode("JobCode2").build();
         WorkOrderDTO woDTO = WorkOrderDTO.builder()
                 .woNumber("testNumber")
                 .jobTypeId(1L)
@@ -54,7 +54,7 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
         Assertions.assertNotNull(entity.getCreationDate(), "Creation date should not be null.");
         Assertions.assertEquals("type1", entity.getJobType().getCode(), "Entity code does not match.");
         Assertions.assertEquals("testNumber", entity.getWoNumber(), "Entity WO number does not match.");
-        Assertions.assertEquals(Arrays.asList("jobCode1","jobCode2"),entity.getJobs().stream().map(j -> j.getJob().getCode()).toList(), "Entity job codes don't match.");
+        Assertions.assertEquals(Arrays.asList("JobCode1","JobCode2"),entity.getJobs().stream().map(j -> j.getJob().getCode()).toList(), "Entity job codes don't match.");
     }
 
     @Test

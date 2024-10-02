@@ -62,7 +62,7 @@ public class WorkOrderServiceImplTest {
                 .address("address").city("city").state("state")
                 .woCreationDate(date1)
                 .woCompletionDate(date2)
-                .clientID("xx1")
+                .clientId("xx1")
                 .build();
         wo.setId(1L);
         wo.setCreationDate(new Date());

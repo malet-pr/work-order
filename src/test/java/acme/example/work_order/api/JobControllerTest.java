@@ -39,7 +39,7 @@ public class JobControllerTest extends BaseApiTest {
     @Autowired
     JobMapper jobMapper = new JobMapper();
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     @DisplayName("Test getJob() endpoint when the job exists")

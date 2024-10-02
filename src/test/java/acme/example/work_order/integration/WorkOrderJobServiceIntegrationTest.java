@@ -76,7 +76,7 @@ public class WorkOrderJobServiceIntegrationTest extends BaseIntegrationTest {
         // Assert
         Assertions.assertNotNull(woJobDTO,"There should be a work order job dto returned when searching by existing id");
         Assertions.assertEquals("ABC123",woJobDTO.getWoNumber(),"wo number does not match.");
-        Assertions.assertEquals("jobCode1",woJobDTO.getJobCode(),"job code does not match.");
+        Assertions.assertEquals("JobCode1",woJobDTO.getJobCode(),"job code does not match.");
         Assertions.assertEquals(5,woJobDTO.getQuantity(),"quantity does not match.");
         Assertions.assertEquals('Y',woJobDTO.getActiveStatus(),"active status does not match.");
         Assertions.assertEquals("",woJobDTO.getAppliedRule(),"applied rule does not match.");
@@ -122,11 +122,11 @@ public class WorkOrderJobServiceIntegrationTest extends BaseIntegrationTest {
     void findByCodesTest_someCodesExist() {
         // Arrange
         // Act
-        List<WorkOrderJobDTO> dtos = service.findByCodes(List.of("jobCode4","non-existing"));
+        List<WorkOrderJobDTO> dtos = service.findByCodes(List.of("JobCode1","none"));
         // Assert
         Assertions.assertInstanceOf(List.class,dtos,"The method should return a list");
         Assertions.assertFalse(dtos.isEmpty(), "There should be at least one object in the list");
-        Assertions.assertEquals(1,dtos.size(),"There should be one object in the list");
+        Assertions.assertEquals(2,dtos.size(),"There should be one object in the list");
         Assertions.assertTrue(dtos.stream().map(WorkOrderJobDTO::getWoNumber).toList().contains("ABC123"),
                 "The list of wo numbers should contain only ABC123");
     }

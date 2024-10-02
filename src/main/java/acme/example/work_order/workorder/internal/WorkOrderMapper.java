@@ -48,7 +48,7 @@ public class WorkOrderMapper {
                 .state(wo.getState())
                 .woCreationDate(wo.getWoCreationDate())
                 .woCompletionDate(wo.getWoCompletionDate())
-                .clientID(wo.getClientID())
+                .clientID(wo.getClientId())
                 .appliedRule(wo.getAppliedRule())
                 .build();
     }
@@ -88,7 +88,7 @@ public class WorkOrderMapper {
                 .state(dto.getState())
                 .woCreationDate(dto.getWoCreationDate())
                 .woCompletionDate(dto.getWoCompletionDate())
-                .clientID(dto.getClientID())
+                .clientId(dto.getClientID())
                 .appliedRule(dto.getAppliedRule())
                 .build();
     }

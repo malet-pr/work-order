@@ -65,7 +65,7 @@ public class WorkOrderMapperTest {
                 .address("address").city("city").state("state")
                 .woCreationDate(date1)
                 .woCompletionDate(date2)
-                .clientID("client1")
+                .clientId("client1")
                 .build();
         dto1 =  WorkOrderDTO.builder()
                 .woNumber("woNumber1")
