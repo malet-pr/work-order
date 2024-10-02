@@ -1,11 +1,11 @@
 package acme.example.work_order.api;
 
-import acme.example.work_order.workorder.internal.WorkOrder;
 import acme.example.work_order.workorderjob.WorkOrderJobDTO;
 import acme.example.work_order.workorderjob.internal.WorkOrderJob;
 import acme.example.work_order.workorderjob.internal.WorkOrderJobDAO;
+import acme.example.work_order.workorderjob.internal.WorkOrderJobMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,12 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import java.util.List;
-import java.util.function.BooleanSupplier;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -33,6 +31,9 @@ public class WorkOrderJobControllerTest extends BaseApiTest {
 
     @Autowired
     private WorkOrderJobDAO woJobDAO;
+
+    @Autowired
+    private WorkOrderJobMapper woJobMapper;
 
     Gson gson = new Gson();
 
@@ -91,5 +92,56 @@ public class WorkOrderJobControllerTest extends BaseApiTest {
         Assertions.assertFalse(saved, "The entity should not have been saved because it`s parent doesn't exist.");
     }
 
-}
+    @Test
+    @DisplayName("Test that a proper dto will be retrieved when searching by an existing id")
+    void getWorkOrderJobByIdTest_success() throws Exception {
+        mockMvc.perform(get("/workorderjobs/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.woNumber").value("ABC123"))
+                .andExpect(jsonPath("$.quantity").value(5));
+    }
 
+    @Test
+    @DisplayName("Test that null will be retrieved when searching by a non-existing id")
+    void getWorkOrderJobByIdTest_failure() throws Exception {
+        mockMvc.perform(get("/workorderjobs/{id}", 100L))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Test a list of dtos is returned when searching for at least one existing code")
+    void findByCodesTest_success() throws Exception {
+        // Arrange
+        List<WorkOrderJob> woJobs = woJobDAO.findByCodes(List.of("JobCode1","JobCode2"));
+        List<WorkOrderJobDTO> dtoList = woJobs.stream().map(woJobMapper::convertToDTO).toList();
+        // Act
+        MvcResult result = mockMvc.perform(get("/workorderjobs/codes")
+                        .param("codeList",new String[]{"JobCode1", "JobCode2","sarasa"}))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        TypeToken<List<WorkOrderJobDTO>> typeToken = new TypeToken<>(){};
+        List<WorkOrderJobDTO> dtos = new Gson().fromJson(json, typeToken.getType());
+        // Assert
+        Assertions.assertNotNull(dtos,"There should be at least one dto");
+        Assertions.assertEquals(3, dtos.size(),"There should be two dtos");
+        Assertions.assertEquals(dtoList, dtos, "The list of dtos should match");
+    }
+
+    @Test
+    @DisplayName("An empty list should be returned when searching by a list of non-existing codes")
+    void findByCodesTest_failure() throws Exception {
+        MvcResult result = mockMvc.perform(get("/workorderjobs/codes")
+                        .param("codeList",new String[]{"non", "existing"}))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        TypeToken<List<WorkOrderJobDTO>> typeToken = new TypeToken<>(){};
+        List<WorkOrderJobDTO> dtos = new Gson().fromJson(json, typeToken.getType());
+        Assertions.assertTrue(dtos.isEmpty(),"There should be no dtos");
+    }
+
+}

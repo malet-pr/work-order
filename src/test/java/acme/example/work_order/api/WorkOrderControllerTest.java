@@ -104,21 +104,6 @@ public class WorkOrderControllerTest extends BaseApiTest{
                 .andExpect(status().isConflict());
     }
 
-    @Test
-    @DisplayName("Test that a proper dto will be retrieved when searching by an existing id")
-    void getWorkOrderById_success() throws Exception {
-        mockMvc.perform(get("/workorders/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
-                .andExpect(jsonPath("$.woNumber").value("ABC123"));
-    }
-
-    @Test
-    @DisplayName("Test that null will be retrieved when searching by a non-existing id")
-    void getWorkOrder_failure() throws Exception {
-        mockMvc.perform(get("/workorders/{id}", 100L))
-                .andExpect(status().isNotFound());
-    }
 
     @Test
     @DisplayName("Test that a proper dto will be retrieved when searching by anexisting number")
