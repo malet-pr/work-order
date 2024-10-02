@@ -144,7 +144,7 @@ public class JobControllerTest extends BaseApiTest {
         List<Job> jobs = jobDAO.findByCodes(List.of("JobCode1","JobCode2"));
         List<JobDTO> dtoList = jobs.stream().map(jobMapper::convertToDto).toList();
         MvcResult result = mockMvc.perform(get("/jobs/codes")
-                        .param("codeList",new String[]{"JobCode1", "JobCode2"}))
+                        .param("codeList",new String[]{"JobCode1", "JobCode2","sarasa"}))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
