@@ -25,10 +25,11 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
     @Override
-    public Boolean save(WorkOrderDTO ot) {
-        WorkOrder entity = woMapper.convertToEntity(ot);
+    public Boolean save(WorkOrderDTO dto) {
+        WorkOrder entity = woMapper.convertToEntity(dto);
         if(entity == null) {return false;}
         try {
+            entity.getJobs().forEach(j -> j.setWorkOrder(entity));
             woDAO.save(entity);
             return true;
         }catch (Exception e) {

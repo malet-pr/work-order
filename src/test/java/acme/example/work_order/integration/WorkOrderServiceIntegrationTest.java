@@ -42,7 +42,7 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
                 .address("address1")
                 .city("city1")
                 .state("state1")
-                .clientID("client1")
+                .clientId("client1")
                 .build();
         // Act
         boolean saved = service.save(woDTO);

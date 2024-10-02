@@ -5,6 +5,8 @@ import java.util.List;
 import acme.example.work_order.workorderjob.internal.WorkOrderJob;
 import acme.example.work_order.jobtype.internal.JobType;
 import acme.example.work_order.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -30,7 +32,9 @@ public class WorkOrder extends BaseEntity {
     private String address;
     private String city;
     private String state;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime woCreationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime woCompletionDate;
     private String clientId;
     private String appliedRule;

@@ -4,8 +4,8 @@ import acme.example.work_order.job.JobDTO;
 import acme.example.work_order.job.internal.Job;
 import acme.example.work_order.job.internal.JobDAO;
 import acme.example.work_order.job.internal.JobMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,7 +34,7 @@ public class JobControllerTest extends BaseApiTest {
     @Autowired
     JobMapper jobMapper = new JobMapper();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Gson gson = new Gson();
 
     @Test
     @DisplayName("Test getJob() endpoint when the job exists")
@@ -141,15 +136,19 @@ public class JobControllerTest extends BaseApiTest {
     @Test
     @DisplayName("Test a list of dtos is returned when searching for at least one existing code")
     void findByCodesTest_success() throws Exception {
+        // Arrange
         List<Job> jobs = jobDAO.findByCodes(List.of("JobCode1","JobCode2"));
         List<JobDTO> dtoList = jobs.stream().map(jobMapper::convertToDto).toList();
+        // Act
         MvcResult result = mockMvc.perform(get("/jobs/codes")
                         .param("codeList",new String[]{"JobCode1", "JobCode2","sarasa"}))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
         String json = result.getResponse().getContentAsString();
-        List<JobDTO> dtos = objectMapper.readValue(json, new TypeReference<>(){});
+        TypeToken<List<JobDTO>> typeToken = new TypeToken<>(){};
+        List<JobDTO> dtos = new Gson().fromJson(json, typeToken.getType());
+        // Assert
         Assertions.assertNotNull(dtos,"There should be at least one dto");
         Assertions.assertEquals(2, dtos.size(),"There should be two dtos");
         Assertions.assertEquals(dtoList, dtos, "The list of dtos should match");
@@ -164,7 +163,8 @@ public class JobControllerTest extends BaseApiTest {
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
         String json = result.getResponse().getContentAsString();
-        List<JobDTO> dtos = objectMapper.readValue(json, new TypeReference<>(){});
+        TypeToken<List<JobDTO>> typeToken = new TypeToken<>(){};
+        List<JobDTO> dtos = new Gson().fromJson(json, typeToken.getType());
         Assertions.assertTrue(dtos.isEmpty(),"There should be no dtos");
     }
 
