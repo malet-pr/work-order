@@ -1,10 +1,13 @@
 package acme.example.work_order.integration;
 
+import acme.example.work_order.WorkOrderApplication;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -12,7 +15,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
+import java.util.logging.Logger;
+
+@SpringBootTest(classes = WorkOrderApplication.class)
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -23,6 +29,7 @@ public abstract class BaseIntegrationTest {
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass")
+            .withInitScript("sql/schema.sql")
             .withReuse(false);
 
     @DynamicPropertySource
@@ -33,7 +40,7 @@ public abstract class BaseIntegrationTest {
     }
 
     @BeforeAll
-    static void beforeEach() {
+    static void beforeEach() throws InterruptedException {
         container.start();
     }
 

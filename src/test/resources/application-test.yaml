@@ -1,26 +1,25 @@
-profile:
-  property:
-    value: test
 spring:
   application:
     name: work_order
   datasource:
-    url: jdbc:tc:postgres:///test
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    username: test
-    password: test
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/test  # This will be overridden by DynamicPropertySource
+    username: test  # This will also be overridden
+    password: test  # This will also be overridden
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+  test:
+    database:
+      replace: none
   sql:
     init:
       mode: always
 logging:
   level:
-    org.hibernate.SQL: DEBUG  # Logs the actual SQL queries
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Logs the SQL parameters
-    org.hibernate.tool.hbm2ddl.SchemaExport: DEBUG  # Logs schema generation (DDL)
+    org.testcontainers: INFO
+    org.springframework: INFO
 chaos:
   monkey:
     enabled: false

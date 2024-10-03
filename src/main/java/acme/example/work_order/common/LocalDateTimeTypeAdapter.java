@@ -7,15 +7,17 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeTypeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
 
     @Override
-    public JsonElement serialize(LocalDateTime localDateTime, Type srcType, JsonSerializationContext context) {
-        return new JsonPrimitive(formatter.format(localDateTime));
+    public JsonElement serialize(final LocalDateTime date, final Type typeOfSrc,
+                                 final JsonSerializationContext context) {
+        return new JsonPrimitive(date.format(formatter));
     }
 
     @Override
-    public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public LocalDateTime deserialize(final JsonElement json, final Type typeOfT,
+                                 final JsonDeserializationContext context) throws JsonParseException {
         return LocalDateTime.parse(json.getAsString(), formatter);
     }
 }

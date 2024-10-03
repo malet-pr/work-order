@@ -6,7 +6,6 @@ import acme.example.work_order.workorderjob.internal.WorkOrderJob;
 import acme.example.work_order.jobtype.internal.JobType;
 import acme.example.work_order.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

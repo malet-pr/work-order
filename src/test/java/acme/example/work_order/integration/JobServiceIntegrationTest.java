@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-@Sql(scripts = "/sql/jobTestData.sql")
+@Sql(scripts = {"/sql/jobTestData.sql"})
 public class JobServiceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
