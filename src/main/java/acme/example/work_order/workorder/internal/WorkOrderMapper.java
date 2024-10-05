@@ -41,7 +41,7 @@ public class WorkOrderMapper {
         });
         return WorkOrderDTO.builder()
                 .woNumber(wo.getWoNumber())
-                .jobTypeId(wo.getId())
+                .jobTypeCode(wo.getJobType().getCode())
                 .woJobDTOs(jobs)
                 .address(wo.getAddress())
                 .city(wo.getCity())
@@ -55,7 +55,7 @@ public class WorkOrderMapper {
 
     public WorkOrder convertToEntity(WorkOrderDTO dto) {
         if(dto == null) {return null;}
-        JobType jobType = jobTypeDAO.findById(dto.getJobTypeId()).orElse(null);
+        JobType jobType = jobTypeDAO.findByCode(dto.getJobTypeCode());
         if(jobType == null) {return null;}
         List<WorkOrderJob> woJobList = new ArrayList<>();
         try{

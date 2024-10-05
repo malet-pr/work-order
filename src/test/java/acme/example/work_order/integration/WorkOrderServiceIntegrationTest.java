@@ -35,7 +35,7 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
         WorkOrderJobDTO woJobDTO2 = WorkOrderJobDTO.builder().jobCode("JobCode2").build();
         WorkOrderDTO woDTO = WorkOrderDTO.builder()
                 .woNumber("testNumber")
-                .jobTypeId(1L)
+                .jobTypeCode("type1")
                 .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
                 .woCreationDate(LocalDateTime.now().minusDays(3))
                 .woCompletionDate(LocalDateTime.now().minusHours(4))
@@ -66,7 +66,7 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
         // Assert
         Assertions.assertNotNull(dto, "The dto should not be null after searching by existing id.");
         Assertions.assertEquals("ABC123",dto.getWoNumber(), "The WO number does not match.");
-        Assertions.assertEquals(1L,dto.getJobTypeId(),"The job type id does not match.");
+        Assertions.assertEquals("type1",dto.getJobTypeCode(),"The job type id does not match.");
     }
 
     @Test
@@ -87,7 +87,7 @@ public class WorkOrderServiceIntegrationTest extends BaseIntegrationTest {
         // Assert
         Assertions.assertNotNull(dto, "The dto should not be null after searching by existing work order number.");
         Assertions.assertEquals(2,dto.getWoJobDTOs().size(), "The size of the WO job list does not match.");
-        Assertions.assertEquals(1L,dto.getJobTypeId(),"The job type id does not match.");
+        Assertions.assertEquals("type1",dto.getJobTypeCode(),"The job type id does not match.");
     }
 
     @Test

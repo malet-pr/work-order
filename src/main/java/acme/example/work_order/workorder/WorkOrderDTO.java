@@ -15,7 +15,7 @@ import java.util.List;
 public class WorkOrderDTO implements Serializable {
     private String woNumber;
     private List<WorkOrderJobDTO> woJobDTOs;
-    private Long jobTypeId;
+    private String jobTypeCode;
     private String address;
     private String city;
     private String state;

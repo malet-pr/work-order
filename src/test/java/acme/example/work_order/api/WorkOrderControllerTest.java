@@ -16,7 +16,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -59,7 +58,7 @@ public class WorkOrderControllerTest extends BaseApiTest{
         // Arrange
         WorkOrderDTO woDTO = WorkOrderDTO.builder()
                 .woNumber("testNumber")
-                .jobTypeId(1L)
+                .jobTypeCode("type1")
                 .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
                 .woCreationDate(LocalDateTime.now().minusDays(3))
                 .woCompletionDate(LocalDateTime.now().minusHours(4))
@@ -87,7 +86,7 @@ public class WorkOrderControllerTest extends BaseApiTest{
     void createJobTest_failure_noNumber() throws Exception {
         // Arrange
         WorkOrderDTO woDTO = WorkOrderDTO.builder()
-                .jobTypeId(1L)
+                .jobTypeCode("type1")
                 .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
                 .woCreationDate(LocalDateTime.now().minusDays(3))
                 .woCompletionDate(LocalDateTime.now().minusHours(4))

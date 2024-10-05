@@ -43,7 +43,7 @@ public class WorkOrderServiceImplTest {
         WorkOrderJobDTO woJobDTO2 = WorkOrderJobDTO.builder().jobCode("code2").build();
         dto = WorkOrderDTO.builder().woNumber("ABC123")
                 .woJobDTOs(Arrays.asList(woJobDTO1, woJobDTO2))
-                .jobTypeId(1L)
+                .jobTypeCode("type1")
                 .address("address").city("city").state("state")
                 .woCreationDate(date1)
                 .woCompletionDate(date2)
