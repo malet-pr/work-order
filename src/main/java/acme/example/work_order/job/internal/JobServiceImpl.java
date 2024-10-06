@@ -1,8 +1,12 @@
 package acme.example.work_order.job.internal;
 
 
+import acme.example.work_order.api.JobController;
 import acme.example.work_order.job.JobDTO;
 import acme.example.work_order.job.JobService;
+import io.micrometer.observation.annotation.Observed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,8 +21,11 @@ public class JobServiceImpl implements JobService {
     @Autowired
     JobMapper jobMapper = new JobMapper();
 
+    private static final Logger log = LoggerFactory.getLogger(JobServiceImpl.class);
+
     @Override
     public JobDTO findById(Long id) {
+        log.info("GGetting data for job with id <{}>", id);
         Job entity = jobDAO.findById(id).orElse(null);
         return jobMapper.convertToDto(entity);
     }

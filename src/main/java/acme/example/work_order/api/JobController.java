@@ -2,6 +2,9 @@ package acme.example.work_order.api;
 
 import acme.example.work_order.job.JobDTO;
 import acme.example.work_order.job.JobService;
+import acme.example.work_order.job.internal.JobServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,11 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
+    private static final Logger log = LoggerFactory.getLogger(JobServiceImpl.class);
+
     @GetMapping("/{id}")
     public ResponseEntity<JobDTO> getJob(@PathVariable("id") Long id) {
+        log.info("Call getJob with id {}", id);
         try {
             JobDTO job = jobService.findById(id);
             return job != null ? new ResponseEntity<>(job, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -28,6 +34,7 @@ public class JobController {
 
     @GetMapping("/codes/{code}")
     public ResponseEntity<JobDTO> getJobByCode(@PathVariable("code") String code) {
+        log.info("Call getJobByCode with code {}", code);
         try {
             JobDTO job = jobService.findByCode(code);
             return job != null ? new ResponseEntity<>(job, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
