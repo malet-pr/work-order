@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/drools?currentSchema=wo"
+    username: "drools"
+    password: "drools"
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: wo-group-2
+management:
+  tracing:
+    enabled: false
+    sampling:
+      probability: 0.0

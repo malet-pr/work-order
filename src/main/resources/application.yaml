@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8091
 spring:
   application:
     name: work_order
@@ -12,13 +12,10 @@ spring:
         ddl-auto: none
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/drools?currentSchema=wo"
-    username: "drools"
-    password: "drools"
   kafka:
-    bootstrap-servers: 9092
     consumer:
-      group-id: wo-group-2
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 management:
   endpoints:
     web:

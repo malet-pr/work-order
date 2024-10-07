@@ -2,7 +2,6 @@ package acme.example.work_order.api;
 
 import acme.example.work_order.job.JobDTO;
 import acme.example.work_order.job.JobService;
-import acme.example.work_order.job.internal.JobServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
-    private static final Logger log = LoggerFactory.getLogger(JobServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(JobController.class);
 
     @GetMapping("/{id}")
     public ResponseEntity<JobDTO> getJob(@PathVariable("id") Long id) {
