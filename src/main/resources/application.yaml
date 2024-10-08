@@ -12,26 +12,31 @@ spring:
         ddl-auto: none
   datasource:
     driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/drools?currentSchema=wo"
+    username: "drools"
+    password: "drools"
   kafka:
+    bootstrap-servers: localhost:9092
     consumer:
+      group-id: wo-group-2
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: latest
 management:
   endpoints:
     web:
       exposure:
         include: health, info, prometheus
   tracing:
-    enabled: true
+    enabled: false
     sampling:
-      probability: 1.0
+      probability: 0.0
   metrics:
     distribution:
       percentiles-histogram:
         http:
           server:
             requests: true
-chaos:
-  monkey:
-    enabled: false
+logging:
+  config: classpath:logback-spring.xml
 

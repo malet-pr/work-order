@@ -9,5 +9,5 @@
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="local_logger" level="info"/>
+    <logger name="testloglevel" level="info"/>
 </configuration>

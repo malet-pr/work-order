@@ -12,7 +12,8 @@ management:
     enabled: true
     sampling:
       probability: 1.0
-
+logging:
+  config: classpath:logback-docker.xml
 
 
 

@@ -18,7 +18,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.logging.Logger;
 
 @SpringBootTest(classes = WorkOrderApplication.class)
-@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

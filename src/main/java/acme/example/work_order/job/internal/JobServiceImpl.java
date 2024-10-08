@@ -25,7 +25,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDTO findById(Long id) {
-        log.info("GGetting data for job with id <{}>", id);
+        log.info("Getting data for job with id <{}>", id);
         Job entity = jobDAO.findById(id).orElse(null);
         return jobMapper.convertToDto(entity);
     }

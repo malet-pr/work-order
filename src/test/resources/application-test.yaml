@@ -20,7 +20,11 @@ logging:
   level:
     org.testcontainers: INFO
     org.springframework: INFO
-chaos:
-  monkey:
+management:
+  tracing:
     enabled: false
+    sampling:
+      probability: 0.0
+
+
 
