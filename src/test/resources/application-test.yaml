@@ -3,9 +3,9 @@ spring:
     name: work_order
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test  # This will be overridden by DynamicPropertySource
-    username: test  # This will also be overridden
-    password: test  # This will also be overridden
+    url: jdbc:postgresql://localhost:5432/test
+    username: test
+    password: test
   jpa:
     show-sql: false
     hibernate:
@@ -16,6 +16,8 @@ spring:
   sql:
     init:
       mode: always
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
 logging:
   level:
     org.testcontainers: INFO

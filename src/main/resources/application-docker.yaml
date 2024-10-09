@@ -5,8 +5,6 @@ spring:
     password: "drools"
   kafka:
     bootstrap-servers: kafka:9092
-    consumer:
-      group-id: wo-group-2
 management:
   tracing:
     enabled: true

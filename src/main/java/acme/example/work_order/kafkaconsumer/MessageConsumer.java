@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
@@ -32,22 +33,26 @@ public class MessageConsumer {
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
             .create();
 
+    AtomicInteger savedCount = new AtomicInteger();
+    AtomicInteger errorCount = new AtomicInteger();
+
     @KafkaListener(topics = "new-wo", groupId = "wo-group-2")
-    public void listen(String message) {
-        log.info("Received message: {}" , message);
-        AtomicInteger savedCount = new AtomicInteger();
-        AtomicInteger errorCount = new AtomicInteger();
-        Type listType = new TypeToken<List<WorkOrderDTO>>() {}.getType();
-        List<WorkOrderDTO> dtos = gson.fromJson(message, listType);
-        dtos.forEach(dto -> {
-            boolean saved = woService.save(dto);
-            if (saved) {
-                savedCount.getAndIncrement();
-            } else {
-                errorCount.getAndIncrement();
-            }
-        });
-        log.info("Work Orders:  Saved {} - Not saved {} ", savedCount, errorCount);
+    public void listen(@Payload String message) {
+        try{
+            Type listType = new TypeToken<List<WorkOrderDTO>>(){}.getType();
+            List<WorkOrderDTO> dtos = gson.fromJson(message, listType);
+            dtos.forEach(dto -> {
+                boolean saved = woService.save(dto);
+                if (saved) {
+                    savedCount.getAndIncrement();
+                } else {
+                    errorCount.getAndIncrement();
+                }
+            });
+            log.info("Work Orders:  Saved {} - Not saved {}", savedCount, errorCount);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
 }

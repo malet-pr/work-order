@@ -21,7 +21,7 @@ spring:
       group-id: wo-group-2
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: latest
+      auto-offset-reset: earliest
 management:
   endpoints:
     web:
