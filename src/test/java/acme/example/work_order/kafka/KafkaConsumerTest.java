@@ -121,8 +121,8 @@ public class KafkaConsumerTest extends BaseIntegrationKafka{
     }
 
     @Test
-    @DisplayName("Simulate Kafka send failure")
-    public void testKafkaSendFailure() {
+    @DisplayName("Simulate parsing message error")
+    public void testParsingMessageError() throws Exception {
         // Arrange
         when(mockTemplate.send(anyString(), anyString())).thenThrow(new RuntimeException("Kafka send failed"));
         String message = gson.toJson(List.of(DTOs.dto1));
