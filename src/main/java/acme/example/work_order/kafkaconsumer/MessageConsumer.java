@@ -6,6 +6,7 @@ import acme.example.work_order.workorder.WorkOrderDTO;
 import acme.example.work_order.workorder.WorkOrderService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -33,13 +34,19 @@ public class MessageConsumer {
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
             .create();
 
-    AtomicInteger savedCount = new AtomicInteger();
-    AtomicInteger errorCount = new AtomicInteger();
+    private final static AtomicInteger savedCount = new AtomicInteger();
+    public AtomicInteger getSavedCount() { return savedCount;}
+
+    private final static AtomicInteger errorCount = new AtomicInteger();
+    public AtomicInteger getErrorCount() { return errorCount;}
+
+    static String errorMessage;
 
     @KafkaListener(topics = "new-wo", groupId = "wo-group-2")
     public void listen(@Payload String message) {
-        try{
-            Type listType = new TypeToken<List<WorkOrderDTO>>(){}.getType();
+        try {
+            Type listType = new TypeToken<List<WorkOrderDTO>>() {
+            }.getType();
             List<WorkOrderDTO> dtos = gson.fromJson(message, listType);
             dtos.forEach(dto -> {
                 boolean saved = woService.save(dto);
@@ -50,8 +57,12 @@ public class MessageConsumer {
                 }
             });
             log.info("Work Orders:  Saved {} - Not saved {}", savedCount, errorCount);
+        } catch (JsonSyntaxException e) {
+            log.error("Failed to deserialize Kafka message: {}", e.getMessage());
+            errorMessage = "Failed to deserialize Kafka message";
         } catch (Exception e) {
             log.error(e.getMessage());
+            errorMessage = e.getMessage();
         }
     }
 

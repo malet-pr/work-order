@@ -21,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 )
 @Testcontainers
 public class BaseIntegrationKafka {
+
     @Container
     static final KafkaContainer kafka = new KafkaContainer(
             DockerImageName.parse("confluentinc/cp-kafka:7.6.1")

@@ -1,6 +1,7 @@
 package acme.example.work_order.jobtype.internal;
 
 import acme.example.work_order.common.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -16,6 +17,7 @@ import lombok.*;
 @Table(name = "JOB_TYPE")
 public class JobType extends BaseEntity {
     @NotNull
+    @Column(unique=true)
     private String code;
     private String name;
     private Character activeStatus;

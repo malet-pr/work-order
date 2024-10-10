@@ -28,6 +28,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     public Boolean save(WorkOrderDTO dto) {
         WorkOrder entity = woMapper.convertToEntity(dto);
         if(entity == null) {return false;}
+        if(woDAO.existsByWoNumber(entity.getWoNumber())) {
+            System.out.println(STR."A work order with id \{entity.getId()} already exists");
+            return false;
+        }
         try {
             entity.getJobs().forEach(j -> j.setWorkOrder(entity));
             woDAO.save(entity);

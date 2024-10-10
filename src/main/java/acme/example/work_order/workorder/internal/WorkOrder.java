@@ -21,6 +21,7 @@ import lombok.*;
 @Table(name = "WORK_ORDER")
 public class WorkOrder extends BaseEntity {
     @NotNull
+    @Column(unique=true)
     private String woNumber;
     @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "WORK_ORDER_ID")

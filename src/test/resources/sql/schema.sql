@@ -3,7 +3,7 @@ CREATE SEQUENCE IF NOT EXISTS job_seq;
 CREATE TABLE IF NOT EXISTS job (
       id int8 DEFAULT nextval('job_seq'),
       creation_date timestamp(6) NULL,
-      code varchar(255) NOT NULL,
+      code varchar(255) NOT NULL UNIQUE ,
       "name" varchar(255) NULL,
       active_status bpchar(1) NULL,
       CONSTRAINT job_pkey PRIMARY KEY (id)
@@ -14,7 +14,7 @@ CREATE SEQUENCE IF NOT EXISTS job_type_seq;
 CREATE TABLE IF NOT EXISTS job_type (
        id int8 DEFAULT nextval('job_type_seq'),
        creation_date timestamp(6) NULL,
-       code varchar(255) NOT NULL,
+       code varchar(255) NOT NULL UNIQUE ,
        "name" varchar(255) NULL,
        client_type varchar(255) NULL,
        active_status bpchar(1) NULL,
@@ -26,7 +26,7 @@ CREATE SEQUENCE IF NOT EXISTS work_order_seq;
 CREATE TABLE IF NOT EXISTS  work_order (
       id int8 DEFAULT nextval('work_order_seq'),
       creation_date timestamp(6) NULL,
-      wo_number varchar(255) NOT NULL,
+      wo_number varchar(255) NOT NULL UNIQUE ,
       jobtype_id int8 NULL,
       client_id varchar(255) NULL,
       address varchar(255) NULL,
